@@ -56,6 +56,7 @@ function operate(x, y, op) {
   if (op === PLUS_OPERATOR) return add(x, y);
   else if (op === MINUS_OPERATOR) return subtract(x, y);
   else if (op === MULTIPLY_OPERATOR) return multiply(x, y);
+  else if (op === DIVIDE_OPERATOR && parseFloat(y) == 0) return "don't";
   else if (op === DIVIDE_OPERATOR) return divide(x, y);
 
   operator = "";
@@ -146,16 +147,17 @@ function updateDisplay(numKey) {
   if (numKey && display.textContent.length < MAX_NUMBER_INPUT) {
     display.textContent = display.textContent + numKey.textContent;
   } else if (!numKey) {
-    result = Math.round(result * 10000000) / 10000000;
-    console.log(result);
-    display.textContent = result;
+    if (typeof result === "number") {
+      result = Math.round(result * 10000000) / 10000000;
+      display.textContent = result;
+    } else display.textContent = result;
   }
 }
 
 function clear() {
   firstNumber = null;
   secondNumber = null;
-  operator = "";
+  operator = null;
   result = null;
 
   isFirstNumberComplete = false;
