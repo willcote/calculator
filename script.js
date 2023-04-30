@@ -10,9 +10,11 @@ const MULTIPLY_OPERATOR = "*";
 const DIVIDE_OPERATOR = "/";
 
 const numberButtons = document.querySelectorAll(".num-key");
-const display = document.querySelector(".display");
-
 const operatorButtons = document.querySelectorAll(".operator-key");
+const display = document.querySelector(".display");
+const clearButton = document.querySelector(".clear");
+
+clearButton.addEventListener("click", clear);
 
 Array.from(numberButtons).forEach((numberButton) => {
   numberButton.addEventListener("click", pressNumber);
@@ -46,8 +48,7 @@ function operate(x, y, op) {
 }
 
 function pressNumber() {
-  firstNumber = `${firstNumber} + ${this.textContent}`;
-  updateDisplay(this.textContent);
+  display.textContent = `${display.textContent}${this.textContent}`;
 }
 
 function pressOperator() {
@@ -64,6 +65,40 @@ function pressOperator() {
   console.log(`${firstNumber} ${operator}`);
 }
 
-function updateDisplay(newText) {
-  display.textContent = `${display.textContent}${newText}`;
+function clear() {
+  firstNumber = 0;
+  secondNumber = 0;
+  operator = "";
+  display.textContent = "";
 }
+
+/* value logic
+
+1. press buttons for NUM1 
+  - NUM1 displayed as selected
+2. press OPERATOR
+  - NUM1 is complete
+3. press buttons for NUM2
+  - NUM1 display cleared
+  - NUM2 displayed as selected
+4. press equals 
+  - NUM2 is complete
+  - operate() called
+  - display answer
+
+OR
+
+1. press buttons for NUM1 
+  - NUM1 displayed as selected)
+2. press OPERATOR
+  - NUM1 is complete
+3. press buttons for NUM2
+  - NUM1 display cleared
+  - NUM2 displayed as selected
+4. press OPERATOR 
+  - NUM2 is complete
+  - operate() called
+  - display answer
+  - NUM2 becomes NUM1
+  - start again from 3.
+*/
