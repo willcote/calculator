@@ -12,7 +12,9 @@ const MAX_NUMBER_INPUT = 10;
 // - as soon as another number is pressed, they go back to false
 let isFirstNumberComplete = false;
 let isSecondNumberComplete = false;
+let isLastPressedOperator = false;
 let isOperationFinished = false;
+let isDisplayingEvaluation = false;
 
 const PLUS_OPERATOR = "+";
 const MINUS_OPERATOR = "-";
@@ -21,12 +23,17 @@ const DIVIDE_OPERATOR = "/";
 
 const numberButtons = document.querySelectorAll(".num-key");
 const operatorButtons = document.querySelectorAll(".operator-key");
+
 const equalsButton = document.querySelector(".equals");
 const clearButton = document.querySelector(".clear");
+const dotButton = document.querySelector(".dot");
+const backButton = document.querySelector(".back");
+
 const display = document.querySelector(".display");
 
 equalsButton.addEventListener("click", pressEquals);
 clearButton.addEventListener("click", clear);
+backButton.addEventListener("click", back);
 
 Array.from(numberButtons).forEach((numberButton) => {
   numberButton.addEventListener("click", pressNumber);
@@ -63,6 +70,8 @@ function operate(x, y, op) {
 }
 
 function pressNumber() {
+  isDisplayingEvaluation = false;
+  isLastPressedOperator = false;
   isOperationFinished = false;
 
   // Putting this here means the number stays on the display until the next
@@ -99,12 +108,16 @@ function pressOperator() {
     ? MULTIPLY_OPERATOR
     : DIVIDE_OPERATOR;
 
-  storeNumber(display.textContent);
+  if (!isLastPressedOperator) {
+    isLastPressedOperator = true;
+    storeNumber(display.textContent);
+  }
 
   console.log(`in pressOperator: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function pressEquals() {
+  isLastPressedOperator = false;
   /*
   
   If isFirstNumberComplete is false, either we're
@@ -126,6 +139,7 @@ function pressEquals() {
     result = operate(firstNumber, secondNumber, operator);
     // display.textContent = result;
     updateDisplay();
+    isDisplayingEvaluation = true;
     firstNumber = result;
   }
 
@@ -161,6 +175,19 @@ function updateDisplay(numKey) {
   }
 }
 
+function back() {
+  if (display.textContent && !isDisplayingEvaluation) {
+    // if (display.textContent.length === 1) {
+    //   // TODO: reset values like they should be here
+    //   if (firstNumber) isFirstNumberComplete = true;
+    // }
+    let currentText = display.textContent.split("");
+    currentText.pop();
+    console.log(currentText);
+    display.textContent = currentText.join("");
+  }
+}
+
 function clear() {
   firstNumber = null;
   secondNumber = null;
@@ -169,6 +196,7 @@ function clear() {
 
   isFirstNumberComplete = false;
   isSecondNumberComplete = false;
+  isLastPressedOperator = false;
   isOperationFinished = false;
 
   display.textContent = "";
@@ -176,8 +204,13 @@ function clear() {
 
 /* bugs
 
- after displaying error message for divide by 0:
- - tries to do calculation with 
+If del after typing a value, it's not resetting either 
+isFirstNumberComplete or isSecondNumberComplete to true, 
+as if it's the first number being typed, resulting in bad behavior.
+
+FIXED: If operator is switched twice, it saves the num in display to secondNumber
+
+IF number is pressed after equals, it should clear()
 
 */
 
