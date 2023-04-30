@@ -4,6 +4,11 @@ let firstNumber;
 let secondNumber;
 let operator;
 
+const PLUS_OPERATOR = "+";
+const MINUS_OPERATOR = "-";
+const MULTIPLY_OPERATOR = "*";
+const DIVIDE_OPERATOR = "/";
+
 const numberButtons = document.querySelectorAll(".num-key");
 const display = document.querySelector(".display");
 
@@ -28,10 +33,10 @@ function divide(x, y) {
 }
 
 function operate(x, y, op) {
-  if (op === "+") return add(x, y);
-  else if (op === "-") return subtract(x, y);
-  else if (op === "*") return multiply(x, y);
-  else if (op === "/") return divide(x, y);
+  if (op === PLUS_OPERATOR) return add(x, y);
+  else if (op === MINUS_OPERATOR) return subtract(x, y);
+  else if (op === MULTIPLY_OPERATOR) return multiply(x, y);
+  else if (op === DIVIDE_OPERATOR) return divide(x, y);
 }
 
 function pressNumber() {
