@@ -3,6 +3,7 @@
 let firstNumber;
 let secondNumber;
 let operator;
+let result;
 
 let isFirstNumberComplete = false;
 let isSecondNumberComplete = false;
@@ -56,6 +57,8 @@ function operate(x, y, op) {
 }
 
 function pressNumber() {
+  isOperationFinished = false;
+
   // Putting this here means the number stays on the display until the next
   // number is entered.
   if (isFirstNumberComplete) {
@@ -73,6 +76,14 @@ function pressNumber() {
 }
 
 function pressOperator() {
+  // handles operator chains
+  if (firstNumber && !isFirstNumberComplete) {
+    pressEquals();
+    secondNumber = "";
+    display.textContent = result;
+  }
+
+  // normal behavior
   operator = this.classList.contains("plus")
     ? PLUS_OPERATOR
     : this.classList.contains("minus")
@@ -83,7 +94,7 @@ function pressOperator() {
 
   storeNumber(display.textContent);
 
-  console.log(`${firstNumber} ${operator}`);
+  console.log(`in pressOperator: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function pressEquals() {
@@ -99,7 +110,7 @@ function pressEquals() {
     isOperationFinished = true;
   }
 
-  console.table(firstNumber, secondNumber, operator);
+  console.log(`in pressEquals: ${firstNumber} ${operator} ${secondNumber}`);
 
   if (firstNumber && secondNumber && operator) {
     result = operate(firstNumber, secondNumber, operator);
