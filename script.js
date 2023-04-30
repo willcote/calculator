@@ -131,11 +131,13 @@ function storeNumber(num) {
 }
 
 function clear() {
-  firstNumber = 0;
-  secondNumber = 0;
+  firstNumber = null;
+  secondNumber = null;
   operator = "";
+  result = null;
 
   isFirstNumberComplete = false;
+  isSecondNumberComplete = false;
   isOperationFinished = false;
 
   display.textContent = "";
