@@ -12,8 +12,14 @@ const DIVIDE_OPERATOR = "/";
 const numberButtons = document.querySelectorAll(".num-key");
 const display = document.querySelector(".display");
 
+const operatorButtons = document.querySelectorAll(".operator-key");
+
 Array.from(numberButtons).forEach((numberButton) => {
   numberButton.addEventListener("click", pressNumber);
+});
+
+Array.from(operatorButtons).forEach((operatorButton) => {
+  operatorButton.addEventListener("click", pressOperator);
 });
 
 function add(x, y) {
@@ -42,6 +48,20 @@ function operate(x, y, op) {
 function pressNumber() {
   firstNumber = `${firstNumber} + ${this.textContent}`;
   updateDisplay(this.textContent);
+}
+
+function pressOperator() {
+  operator = this.classList.contains("plus")
+    ? PLUS_OPERATOR
+    : this.classList.contains("minus")
+    ? MINUS_OPERATOR
+    : this.classList.contains("multiply")
+    ? MULTIPLY_OPERATOR
+    : DIVIDE_OPERATOR;
+
+  firstNumber = display.textContent;
+
+  console.log(`${firstNumber} ${operator}`);
 }
 
 function updateDisplay(newText) {
