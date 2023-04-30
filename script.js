@@ -5,6 +5,8 @@ let secondNumber;
 let operator;
 let result;
 
+const MAX_NUMBER_INPUT = 10;
+
 // - isFirstNumberComplete and isSecondNumberComplete
 // are true for the moment after they are "locked in"
 // - as soon as another number is pressed, they go back to false
@@ -75,7 +77,7 @@ function pressNumber() {
     isSecondNumberComplete = false;
   }
 
-  display.textContent = display.textContent + this.textContent;
+  updateDisplay(this);
 }
 
 function pressOperator() {
@@ -83,7 +85,6 @@ function pressOperator() {
   if (firstNumber && !isFirstNumberComplete) {
     pressEquals();
     secondNumber = "";
-    display.textContent = result;
   }
 
   // normal behavior
@@ -120,7 +121,8 @@ function pressEquals() {
 
   if (firstNumber && secondNumber && operator) {
     result = operate(firstNumber, secondNumber, operator);
-    display.textContent = result;
+    // display.textContent = result;
+    updateDisplay();
     firstNumber = result;
   }
 
@@ -134,6 +136,19 @@ function storeNumber(num) {
   } else if (isOperationFinished === true) {
   } else {
     secondNumber = num;
+  }
+}
+
+function updateDisplay(numKey) {
+  // if there's no numKey, it's being called from pressEquals()
+  // which means it has to show an evaluation
+
+  if (numKey && display.textContent.length < MAX_NUMBER_INPUT) {
+    display.textContent = display.textContent + numKey.textContent;
+  } else if (!numKey) {
+    result = Math.round(result * 10000000) / 10000000;
+    console.log(result);
+    display.textContent = result;
   }
 }
 
