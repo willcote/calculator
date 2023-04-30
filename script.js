@@ -70,6 +70,7 @@ function operate(x, y, op) {
 }
 
 function pressNumber() {
+  if (isLastPressedEquals) clear();
   isDisplayingEvaluation = false;
   isLastPressedOperator = false;
   isOperationFinished = false;
@@ -111,6 +112,7 @@ function pressOperator() {
   if (!isLastPressedOperator) {
     isLastPressedOperator = true;
     storeNumber(display.textContent);
+    evaluate();
   }
 
   console.log(`in pressOperator: ${firstNumber} ${operator} ${secondNumber}`);
@@ -118,6 +120,11 @@ function pressOperator() {
 
 function pressEquals() {
   isLastPressedOperator = false;
+  isLastPressedEquals = true;
+  evaluate();
+}
+
+function evaluate() {
   /*
   
   If isFirstNumberComplete is false, either we're
