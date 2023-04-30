@@ -3,6 +3,7 @@
 let firstNumber;
 let secondNumber;
 let operator;
+let isFirstNumberComplete = false;
 
 const PLUS_OPERATOR = "+";
 const MINUS_OPERATOR = "-";
@@ -45,10 +46,20 @@ function operate(x, y, op) {
   else if (op === MINUS_OPERATOR) return subtract(x, y);
   else if (op === MULTIPLY_OPERATOR) return multiply(x, y);
   else if (op === DIVIDE_OPERATOR) return divide(x, y);
+
+  operator = "";
+  firstNumber = secondNumber;
 }
 
 function pressNumber() {
-  display.textContent = `${display.textContent}${this.textContent}`;
+  // Putting this here means the number stays on the display until the next
+  // number is entered.
+  if (isFirstNumberComplete) {
+    display.textContent = "";
+    isFirstNumberComplete = false;
+  }
+
+  display.textContent = display.textContent + this.textContent;
 }
 
 function pressOperator() {
@@ -60,9 +71,19 @@ function pressOperator() {
     ? MULTIPLY_OPERATOR
     : DIVIDE_OPERATOR;
 
-  firstNumber = display.textContent;
+  storeNumber(display.textContent);
 
   console.log(`${firstNumber} ${operator}`);
+}
+
+function storeNumber(num) {
+  if (!isFirstNumberComplete) {
+    firstNumber = num;
+    isFirstNumberComplete = true;
+  } else {
+    secondNumber = num;
+    // isFirstNumberComplete = false;
+  }
 }
 
 function clear() {
@@ -70,6 +91,7 @@ function clear() {
   secondNumber = 0;
   operator = "";
   display.textContent = "";
+  isFirstNumberComplete = false;
 }
 
 /* value logic
