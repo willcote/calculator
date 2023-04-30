@@ -123,6 +123,7 @@ function storeNumber(num) {
   if (!isFirstNumberComplete) {
     firstNumber = num;
     isFirstNumberComplete = true;
+  } else if (isOperationFinished === true) {
   } else {
     secondNumber = num;
     // isFirstNumberComplete = false;
