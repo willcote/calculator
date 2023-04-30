@@ -81,12 +81,14 @@ function pressNumber() {
   updateDisplay(this);
 }
 
+function isDisplayNaN() {
+  // handles non-number messages in display
+  // isNaN coerces parameter into a number - text will be true
+  if (isNaN(display.textContent)) clear();
+}
+
 function pressOperator() {
-  // handles operator chains
-  if (firstNumber && !isFirstNumberComplete) {
-    pressEquals();
-    secondNumber = "";
-  }
+  isDisplayNaN();
 
   // normal behavior
   operator = this.classList.contains("plus")
@@ -150,7 +152,12 @@ function updateDisplay(numKey) {
     if (typeof result === "number") {
       result = Math.round(result * 10000000) / 10000000;
       display.textContent = result;
-    } else display.textContent = result;
+    } else {
+      display.textContent = result;
+      firstNumber = null;
+      secondNumber = null;
+      console.log(firstNumber + " " + secondNumber);
+    }
   }
 }
 
@@ -166,6 +173,13 @@ function clear() {
 
   display.textContent = "";
 }
+
+/* bugs
+
+ after displaying error message for divide by 0:
+ - tries to do calculation with 
+
+*/
 
 /* value logic
 
