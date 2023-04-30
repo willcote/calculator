@@ -43,10 +43,12 @@ const DIVIDE_OPERATOR = "/";
 
 const numberButtons = document.querySelectorAll(".num-key");
 const operatorButtons = document.querySelectorAll(".operator-key");
+const backButton = document.querySelector(".back");
 const equalsButton = document.querySelector(".equals");
 const clearButton = document.querySelector(".clear");
 const display = document.querySelector(".display");
 
+backButton.addEventListener("click", back);
 equalsButton.addEventListener("click", pressEquals);
 clearButton.addEventListener("click", clear);
 
@@ -176,6 +178,10 @@ function updateDisplay(numKey) {
     console.log(result);
     display.textContent = result;
   }
+}
+
+function back() {
+  /* backButton functionality here */
 }
 
 function clear() {
