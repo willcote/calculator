@@ -5,6 +5,9 @@ let secondNumber;
 let operator;
 let result;
 
+// - isFirstNumberComplete and isSecondNumberComplete
+// are true for the moment after they are "locked in"
+// - as soon as another number is pressed, they go back to false
 let isFirstNumberComplete = false;
 let isSecondNumberComplete = false;
 let isOperationFinished = false;
@@ -98,25 +101,30 @@ function pressOperator() {
 }
 
 function pressEquals() {
-  // if isFirstNumberComplete is false, either we're
-  // on the first number still (before pressing an operator)
-  // or the second number has begun typing
-  // (because isFirstNumberComplete is only true
-  // for the time after pressing the operator and before
-  // pressing another number)
-  if (!isFirstNumberComplete && !isOperationFinished) {
+  /*
+  
+  If isFirstNumberComplete is false, either we're
+  on the first number still (before pressing an operator)
+  or the second number has begun typing
+  (because isFirstNumberComplete is only true
+  for the time after pressing the operator and before
+  pressing another number).
+
+  */
+
+  if (firstNumber && !isFirstNumberComplete && !isOperationFinished) {
     secondNumber = display.textContent;
     isSecondNumberComplete = true;
     isOperationFinished = true;
   }
-
-  console.log(`in pressEquals: ${firstNumber} ${operator} ${secondNumber}`);
 
   if (firstNumber && secondNumber && operator) {
     result = operate(firstNumber, secondNumber, operator);
     display.textContent = result;
     firstNumber = result;
   }
+
+  console.log(`in pressEquals: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function storeNumber(num) {
@@ -126,7 +134,6 @@ function storeNumber(num) {
   } else if (isOperationFinished === true) {
   } else {
     secondNumber = num;
-    // isFirstNumberComplete = false;
   }
 }
 
