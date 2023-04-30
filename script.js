@@ -12,9 +12,11 @@ const DIVIDE_OPERATOR = "/";
 
 const numberButtons = document.querySelectorAll(".num-key");
 const operatorButtons = document.querySelectorAll(".operator-key");
-const display = document.querySelector(".display");
+const equalsButton = document.querySelector(".equals");
 const clearButton = document.querySelector(".clear");
+const display = document.querySelector(".display");
 
+equalsButton.addEventListener("click", pressEquals);
 clearButton.addEventListener("click", clear);
 
 Array.from(numberButtons).forEach((numberButton) => {
@@ -26,19 +28,19 @@ Array.from(operatorButtons).forEach((operatorButton) => {
 });
 
 function add(x, y) {
-  return x + y;
+  return +x + +y;
 }
 
 function subtract(x, y) {
-  return x - y;
+  return +x - +y;
 }
 
 function multiply(x, y) {
-  return x * y;
+  return +x * +y;
 }
 
 function divide(x, y) {
-  return x / y;
+  return +x / +y;
 }
 
 function operate(x, y, op) {
@@ -84,6 +86,13 @@ function storeNumber(num) {
     secondNumber = num;
     // isFirstNumberComplete = false;
   }
+}
+
+function pressEquals() {
+  if (!isFirstNumberComplete) secondNumber = display.textContent;
+  console.table(firstNumber, secondNumber, operator);
+  if (firstNumber && secondNumber && operator)
+    display.textContent = operate(firstNumber, secondNumber, operator);
 }
 
 function clear() {
