@@ -1,3 +1,25 @@
+/* new logic 
+
+1. press number
+  - add digit to firstNumber variable
+  - display firstNumber variable on display
+REPEAT AS MANY TIMES AS DESIRED
+
+2. press operator
+  - firstNumber is done
+  - save operator internally
+
+3. press number
+   - add digit to secondNumber var
+   - display secondNumber variable on display
+
+4. press operator
+   - display result of operate()
+   - set firstNumber to result
+   - delete secondNumber variable
+
+*/
+
 // firstNumber operator secondNumber
 // i.e. 1 + 2
 let firstNumber;
@@ -119,7 +141,11 @@ function pressEquals() {
     isOperationFinished = true;
   }
 
-  if (firstNumber && secondNumber && operator) {
+  if (
+    (firstNumber || firstNumber === 0) &&
+    (secondNumber || secondNumber === 0) &&
+    operator
+  ) {
     result = operate(firstNumber, secondNumber, operator);
     // display.textContent = result;
     updateDisplay();
