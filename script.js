@@ -3,7 +3,10 @@
 let firstNumber;
 let secondNumber;
 let operator;
+
 let isFirstNumberComplete = false;
+let isSecondNumberComplete = false;
+let isOperationFinished = false;
 
 const PLUS_OPERATOR = "+";
 const MINUS_OPERATOR = "-";
@@ -50,7 +53,6 @@ function operate(x, y, op) {
   else if (op === DIVIDE_OPERATOR) return divide(x, y);
 
   operator = "";
-  firstNumber = secondNumber;
 }
 
 function pressNumber() {
@@ -59,6 +61,12 @@ function pressNumber() {
   if (isFirstNumberComplete) {
     display.textContent = "";
     isFirstNumberComplete = false;
+  }
+
+  // runs when previous operation is over
+  if (isSecondNumberComplete) {
+    display.textContent = "";
+    isSecondNumberComplete = false;
   }
 
   display.textContent = display.textContent + this.textContent;
@@ -78,6 +86,28 @@ function pressOperator() {
   console.log(`${firstNumber} ${operator}`);
 }
 
+function pressEquals() {
+  // if isFirstNumberComplete is false, either we're
+  // on the first number still (before pressing an operator)
+  // or the second number has begun typing
+  // (because isFirstNumberComplete is only true
+  // for the time after pressing the operator and before
+  // pressing another number)
+  if (!isFirstNumberComplete && !isOperationFinished) {
+    secondNumber = display.textContent;
+    isSecondNumberComplete = true;
+    isOperationFinished = true;
+  }
+
+  console.table(firstNumber, secondNumber, operator);
+
+  if (firstNumber && secondNumber && operator) {
+    result = operate(firstNumber, secondNumber, operator);
+    display.textContent = result;
+    firstNumber = result;
+  }
+}
+
 function storeNumber(num) {
   if (!isFirstNumberComplete) {
     firstNumber = num;
@@ -88,19 +118,15 @@ function storeNumber(num) {
   }
 }
 
-function pressEquals() {
-  if (!isFirstNumberComplete) secondNumber = display.textContent;
-  console.table(firstNumber, secondNumber, operator);
-  if (firstNumber && secondNumber && operator)
-    display.textContent = operate(firstNumber, secondNumber, operator);
-}
-
 function clear() {
   firstNumber = 0;
   secondNumber = 0;
   operator = "";
-  display.textContent = "";
+
   isFirstNumberComplete = false;
+  isOperationFinished = false;
+
+  display.textContent = "";
 }
 
 /* value logic
