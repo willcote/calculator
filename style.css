@@ -54,26 +54,6 @@ body {
   flex: 1;
 }
 
-.line-5 > .key {
-  border-radius: 25% / 50%;
-}
-
-/* .equals {
-  flex: 1 1 0;
-}
-.zero {
-  flex: 12222221 10 0;
-} */
-
-/* doesn't work
-.zero {
-  flex: 3;
-}
-
-.equals {
-  flex: 1;
-} */
-
 .key {
   box-sizing: border-box;
   color: #333;
@@ -82,13 +62,16 @@ body {
   border-radius: 50%;
   border: #333 solid 1px;
 
-  flex: 1 1 0;
-
+  flex: 1 1 auto;
   margin: 2px;
 
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.key:active {
+  background-color: #eee;
 }
 
 .operator-key {
@@ -99,16 +82,25 @@ body {
   background-color: #b4b4b4;
 }
 
-.clear,
-.back {
+.clear {
+  border-radius: 25% / 50%;
   background-color: #ff8a8a;
-  flex: 1;
-}
-
-.divide {
   flex: 2;
 }
 
-.key:active {
-  background-color: #eee;
+.divide,
+.back {
+  border-radius: 50% / 50%;
+  flex: 1;
+}
+
+.dot,
+.equals {
+  flex: 1;
+  border-radius: 50% / 50%;
+}
+
+.zero {
+  border-radius: 25% / 50%;
+  flex: 2;
 }
