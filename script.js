@@ -106,7 +106,7 @@ function pressNumber() {
 
 function pressOperator() {
   // handles operator chains
-  if (firstNumber && !isFirstNumberComplete) {
+  if ((firstNumber || firstNumber === 0) && !isFirstNumberComplete) {
     pressEquals();
     secondNumber = "";
   }
@@ -123,6 +123,16 @@ function pressOperator() {
   storeNumber(display.textContent);
 
   console.log(`in pressOperator: ${firstNumber} ${operator} ${secondNumber}`);
+}
+
+function storeNumber(num) {
+  if (!isFirstNumberComplete) {
+    firstNumber = num;
+    isFirstNumberComplete = true;
+  } else if (isOperationFinished === true) {
+  } else {
+    secondNumber = num;
+  }
 }
 
 function pressEquals() {
@@ -157,16 +167,6 @@ function pressEquals() {
   console.log(`in pressEquals: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
-function storeNumber(num) {
-  if (!isFirstNumberComplete) {
-    firstNumber = num;
-    isFirstNumberComplete = true;
-  } else if (isOperationFinished === true) {
-  } else {
-    secondNumber = num;
-  }
-}
-
 function updateDisplay(numKey) {
   // if there's no numKey, it's being called from pressEquals()
   // which means it has to show an evaluation
@@ -181,7 +181,21 @@ function updateDisplay(numKey) {
 }
 
 function back() {
-  /* backButton functionality here */
+  /* backButton functionality here 
+  
+  if there's something in the display
+  delete the last character
+
+  if it deletes the only character in display
+  reset the state to whatever it just was
+
+  */
+
+  if (display.textContent && isOperationFinished === false) {
+    let curr = display.textContent.split("");
+    curr.pop();
+    display.textContent = curr.join("");
+  }
 }
 
 function clear() {
