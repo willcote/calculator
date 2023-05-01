@@ -111,7 +111,7 @@ function pressNumber() {
   }
 
   updateDisplay(this);
-  console.log(`pressNumber: ${firstNumber} ${operator} ${secondNumber}`);
+  // console.log(`pressNumber: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function pressOperator() {
@@ -132,7 +132,7 @@ function pressOperator() {
 
   storeNumber(display.textContent);
 
-  console.log(`pressOperator: ${firstNumber} ${operator} ${secondNumber}`);
+  // console.log(`pressOperator: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function storeNumber(num) {
@@ -177,7 +177,7 @@ function pressEquals() {
     clearExceptDisplay();
   }
 
-  console.log(`pressEquals: ${firstNumber} ${operator} ${secondNumber}`);
+  // console.log(`pressEquals: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function updateDisplay(numKey) {
@@ -188,7 +188,7 @@ function updateDisplay(numKey) {
     display.textContent = display.textContent + numKey.textContent;
   } else if (!numKey) {
     result = Math.round(result * 10000000) / 10000000;
-    console.log(result);
+    // console.log(result);
     display.textContent = result;
   }
 }
@@ -215,7 +215,7 @@ function back() {
       else if (firstNumber || firstNumber === 0) isFirstNumberComplete = true;
     }
   }
-  console.log(`back: ${firstNumber} ${operator} ${secondNumber}`);
+  // console.log(`back: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function clearExceptDisplay() {
