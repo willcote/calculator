@@ -102,6 +102,7 @@ function pressNumber() {
   }
 
   updateDisplay(this);
+  console.log(`pressNumber: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function pressOperator() {
@@ -122,7 +123,7 @@ function pressOperator() {
 
   storeNumber(display.textContent);
 
-  console.log(`in pressOperator: ${firstNumber} ${operator} ${secondNumber}`);
+  console.log(`pressOperator: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function storeNumber(num) {
@@ -164,7 +165,7 @@ function pressEquals() {
     firstNumber = result;
   }
 
-  console.log(`in pressEquals: ${firstNumber} ${operator} ${secondNumber}`);
+  console.log(`pressEquals: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function updateDisplay(numKey) {
@@ -195,7 +196,14 @@ function back() {
     let curr = display.textContent.split("");
     curr.pop();
     display.textContent = curr.join("");
+
+    // if I just deleted the last character
+    if (display.textContent.length === 0) {
+      if (secondNumber || secondNumber === 0) isSecondNumberComplete = true;
+      else if (firstNumber || firstNumber === 0) isFirstNumberComplete = true;
+    }
   }
+  console.log(`back: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function clear() {
@@ -210,6 +218,13 @@ function clear() {
 
   display.textContent = "";
 }
+
+/* bug with this combo
+
+num operator num back operator
+
+
+*/
 
 /* value logic
 
