@@ -83,24 +83,32 @@ body {
 }
 
 .clear {
-  border-radius: 25% / 50%;
   background-color: #ff8a8a;
-  flex: 2;
+  width: 120px;
+  flex: 2 1 auto;
+  border-radius: 25% / 50%;
+}
+
+.back {
+  background-color: #ff8a8a;
 }
 
 .divide,
 .back {
+  width: 60px;
+  flex: 1 1 auto;
   border-radius: 50% / 50%;
-  flex: 1;
 }
 
 .dot,
 .equals {
-  flex: 1;
+  width: 60px;
+  flex: 1 1 auto;
   border-radius: 50% / 50%;
 }
 
 .zero {
+  width: 120px;
+  flex: 2 1 auto;
   border-radius: 25% / 50%;
-  flex: 2;
 }
