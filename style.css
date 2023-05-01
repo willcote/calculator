@@ -4,6 +4,7 @@ body {
   width: 100vw;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .calculator {
@@ -54,10 +55,15 @@ body {
 }
 
 .line-5 > .key {
-  justify-content: flex-start;
-  padding-left: 11%;
   border-radius: 25% / 50%;
 }
+
+/* .equals {
+  flex: 1 1 0;
+}
+.zero {
+  flex: 12222221 10 0;
+} */
 
 /* doesn't work
 .zero {
@@ -83,6 +89,24 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.operator-key {
+  background-color: #8ae2ff;
+}
+
+.equals {
+  background-color: #b4b4b4;
+}
+
+.clear,
+.back {
+  background-color: #ff8a8a;
+  flex: 1;
+}
+
+.divide {
+  flex: 2;
 }
 
 .key:active {

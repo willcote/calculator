@@ -1,3 +1,25 @@
+/* new logic 
+
+1. press number
+  - add digit to firstNumber variable
+  - display firstNumber variable on display
+REPEAT AS MANY TIMES AS DESIRED
+
+2. press operator
+  - firstNumber is done
+  - save operator internally
+
+3. press number
+   - add digit to secondNumber var
+   - display secondNumber variable on display
+
+4. press operator
+   - display result of operate()
+   - set firstNumber to result
+   - delete secondNumber variable
+
+*/
+
 // firstNumber operator secondNumber
 // i.e. 1 + 2
 let firstNumber;
@@ -12,9 +34,7 @@ const MAX_NUMBER_INPUT = 10;
 // - as soon as another number is pressed, they go back to false
 let isFirstNumberComplete = false;
 let isSecondNumberComplete = false;
-let isLastPressedOperator = false;
 let isOperationFinished = false;
-let isDisplayingEvaluation = false;
 
 const PLUS_OPERATOR = "+";
 const MINUS_OPERATOR = "-";
@@ -23,17 +43,14 @@ const DIVIDE_OPERATOR = "/";
 
 const numberButtons = document.querySelectorAll(".num-key");
 const operatorButtons = document.querySelectorAll(".operator-key");
-
+const backButton = document.querySelector(".back");
 const equalsButton = document.querySelector(".equals");
 const clearButton = document.querySelector(".clear");
-const dotButton = document.querySelector(".dot");
-const backButton = document.querySelector(".back");
-
 const display = document.querySelector(".display");
 
+backButton.addEventListener("click", back);
 equalsButton.addEventListener("click", pressEquals);
 clearButton.addEventListener("click", clear);
-backButton.addEventListener("click", back);
 
 Array.from(numberButtons).forEach((numberButton) => {
   numberButton.addEventListener("click", pressNumber);
@@ -63,17 +80,22 @@ function operate(x, y, op) {
   if (op === PLUS_OPERATOR) return add(x, y);
   else if (op === MINUS_OPERATOR) return subtract(x, y);
   else if (op === MULTIPLY_OPERATOR) return multiply(x, y);
-  else if (op === DIVIDE_OPERATOR && parseFloat(y) == 0) return "don't";
   else if (op === DIVIDE_OPERATOR) return divide(x, y);
 
   operator = "";
 }
 
 function pressNumber() {
-  if (isLastPressedEquals) clear();
-  isDisplayingEvaluation = false;
-  isLastPressedOperator = false;
   isOperationFinished = false;
+
+  // console.log(this.classList.contains("dot"));
+  if (this.classList.contains("dot")) {
+    let displayArray = display.textContent.split("");
+    // console.log(displayArray);
+    if (display.textContent) {
+      for (char of displayArray) if (char === ".") return;
+    }
+  }
 
   // Putting this here means the number stays on the display until the next
   // number is entered.
@@ -89,16 +111,15 @@ function pressNumber() {
   }
 
   updateDisplay(this);
-}
-
-function isDisplayNaN() {
-  // handles non-number messages in display
-  // isNaN coerces parameter into a number - text will be true
-  if (isNaN(display.textContent)) clear();
+  console.log(`pressNumber: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function pressOperator() {
-  isDisplayNaN();
+  // handles operator chains
+  if ((firstNumber || firstNumber === 0) && !isFirstNumberComplete) {
+    pressEquals();
+    secondNumber = "";
+  }
 
   // normal behavior
   operator = this.classList.contains("plus")
@@ -109,22 +130,23 @@ function pressOperator() {
     ? MULTIPLY_OPERATOR
     : DIVIDE_OPERATOR;
 
-  if (!isLastPressedOperator) {
-    isLastPressedOperator = true;
-    storeNumber(display.textContent);
-    evaluate();
-  }
+  storeNumber(display.textContent);
 
-  console.log(`in pressOperator: ${firstNumber} ${operator} ${secondNumber}`);
+  console.log(`pressOperator: ${firstNumber} ${operator} ${secondNumber}`);
+}
+
+function storeNumber(num) {
+  if (num === ".") num = 0;
+  if (!isFirstNumberComplete) {
+    firstNumber = num;
+    isFirstNumberComplete = true;
+  } else if (isOperationFinished === true) {
+  } else {
+    secondNumber = num;
+  }
 }
 
 function pressEquals() {
-  isLastPressedOperator = false;
-  isLastPressedEquals = true;
-  evaluate();
-}
-
-function evaluate() {
   /*
   
   If isFirstNumberComplete is false, either we're
@@ -142,25 +164,20 @@ function evaluate() {
     isOperationFinished = true;
   }
 
-  if (firstNumber && secondNumber && operator) {
+  if (
+    (firstNumber || firstNumber === 0) &&
+    (secondNumber || secondNumber === 0) &&
+    operator
+  ) {
     result = operate(firstNumber, secondNumber, operator);
     // display.textContent = result;
     updateDisplay();
-    isDisplayingEvaluation = true;
     firstNumber = result;
+
+    clearExceptDisplay();
   }
 
-  console.log(`in pressEquals: ${firstNumber} ${operator} ${secondNumber}`);
-}
-
-function storeNumber(num) {
-  if (!isFirstNumberComplete) {
-    firstNumber = num;
-    isFirstNumberComplete = true;
-  } else if (isOperationFinished === true) {
-  } else {
-    secondNumber = num;
-  }
+  console.log(`pressEquals: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
 function updateDisplay(numKey) {
@@ -170,56 +187,59 @@ function updateDisplay(numKey) {
   if (numKey && display.textContent.length < MAX_NUMBER_INPUT) {
     display.textContent = display.textContent + numKey.textContent;
   } else if (!numKey) {
-    if (typeof result === "number") {
-      result = Math.round(result * 10000000) / 10000000;
-      display.textContent = result;
-    } else {
-      display.textContent = result;
-      firstNumber = null;
-      secondNumber = null;
-      console.log(firstNumber + " " + secondNumber);
-    }
+    result = Math.round(result * 10000000) / 10000000;
+    console.log(result);
+    display.textContent = result;
   }
 }
 
 function back() {
-  if (display.textContent && !isDisplayingEvaluation) {
-    // if (display.textContent.length === 1) {
-    //   // TODO: reset values like they should be here
-    //   if (firstNumber) isFirstNumberComplete = true;
-    // }
-    let currentText = display.textContent.split("");
-    currentText.pop();
-    console.log(currentText);
-    display.textContent = currentText.join("");
+  /* backButton functionality here 
+  
+  if there's something in the display
+  delete the last character
+
+  if it deletes the only character in display
+  reset the state to whatever it just was
+
+  */
+
+  if (display.textContent && isOperationFinished === false) {
+    let curr = display.textContent.split("");
+    curr.pop();
+    display.textContent = curr.join("");
+
+    // if I just deleted the last character
+    if (display.textContent.length === 0) {
+      if (secondNumber || secondNumber === 0) isSecondNumberComplete = true;
+      else if (firstNumber || firstNumber === 0) isFirstNumberComplete = true;
+    }
   }
+  console.log(`back: ${firstNumber} ${operator} ${secondNumber}`);
+}
+
+function clearExceptDisplay() {
+  firstNumber = null;
+  secondNumber = null;
+  operator = "";
+  result = null;
+
+  isFirstNumberComplete = false;
+  // isSecondNumberComplete = false;
 }
 
 function clear() {
   firstNumber = null;
   secondNumber = null;
-  operator = null;
+  operator = "";
   result = null;
 
   isFirstNumberComplete = false;
   isSecondNumberComplete = false;
-  isLastPressedOperator = false;
   isOperationFinished = false;
 
   display.textContent = "";
 }
-
-/* bugs
-
-If del after typing a value, it's not resetting either 
-isFirstNumberComplete or isSecondNumberComplete to true, 
-as if it's the first number being typed, resulting in bad behavior.
-
-FIXED: If operator is switched twice, it saves the num in display to secondNumber
-
-IF number is pressed after equals, it should clear()
-
-*/
 
 /* value logic
 
