@@ -54,10 +54,15 @@ body {
 }
 
 .line-5 > .key {
-  justify-content: flex-start;
-  padding-left: 11%;
   border-radius: 25% / 50%;
 }
+
+/* .equals {
+  flex: 1 1 0;
+}
+.zero {
+  flex: 12222221 10 0;
+} */
 
 /* doesn't work
 .zero {

@@ -88,6 +88,15 @@ function operate(x, y, op) {
 function pressNumber() {
   isOperationFinished = false;
 
+  // console.log(this.classList.contains("dot"));
+  if (this.classList.contains("dot")) {
+    let displayArray = display.textContent.split("");
+    // console.log(displayArray);
+    if (display.textContent) {
+      for (char of displayArray) if (char === ".") return;
+    }
+  }
+
   // Putting this here means the number stays on the display until the next
   // number is entered.
   if (isFirstNumberComplete) {
@@ -127,6 +136,7 @@ function pressOperator() {
 }
 
 function storeNumber(num) {
+  if (num === ".") num = 0;
   if (!isFirstNumberComplete) {
     firstNumber = num;
     isFirstNumberComplete = true;
@@ -163,6 +173,8 @@ function pressEquals() {
     // display.textContent = result;
     updateDisplay();
     firstNumber = result;
+
+    clearExceptDisplay();
   }
 
   console.log(`pressEquals: ${firstNumber} ${operator} ${secondNumber}`);
@@ -206,6 +218,16 @@ function back() {
   console.log(`back: ${firstNumber} ${operator} ${secondNumber}`);
 }
 
+function clearExceptDisplay() {
+  firstNumber = null;
+  secondNumber = null;
+  operator = "";
+  result = null;
+
+  isFirstNumberComplete = false;
+  // isSecondNumberComplete = false;
+}
+
 function clear() {
   firstNumber = null;
   secondNumber = null;
@@ -218,13 +240,6 @@ function clear() {
 
   display.textContent = "";
 }
-
-/* bug with this combo
-
-num operator num back operator
-
-
-*/
 
 /* value logic
 
